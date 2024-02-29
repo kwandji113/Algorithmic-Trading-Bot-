@@ -2,7 +2,7 @@
 by Nathan, Kelyan, Aidan, Eamon, Robert, Alex and Angus
 
 Rough Project Overview:
-
+We are making an algorithmic trading bot. Using some complex math and a trained neural network to perform sentiment analysis, we are going to create an algorithm that should be able to predict the growth or decay of stocks with some reliability. Right now this will be a program that a user can download and be able to run on their computer. It should provide information on when to buy a stock and when to sell. We might be able to get the program to a point where we can handle the buying and selling of assets within the program. 
 
 
 
