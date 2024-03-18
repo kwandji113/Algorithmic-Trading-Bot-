@@ -22,10 +22,11 @@ def calculate_moving_average(stock_symbol, n_days, start_date, end_date):
     if starting_index < 0: #prevent out of bound errors
         return None
     relevant_data = full_data.iloc[starting_index:ending_index + 1]
-    moving_averages = relevant_data['Close'].rolling(window=n_days).mean()
+    moving_averages = relevant_data['Close'].rolling(window=n_days).mean().to_frame()
     aligned_moving_averages = moving_averages.loc[starting_row_name:ending_row_name]
 
     return aligned_moving_averages
+
 
 #calculate a n-day exponential moving average
 def nDayEMA(stock_symbol, n_days, start_date, end_date):
