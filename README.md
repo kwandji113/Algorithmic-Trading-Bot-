@@ -7,7 +7,7 @@ We are making an algorithmic trading bot. Using some complex math and a trained 
 
 
 4-Month Timeline:
-Checkpoint 1: Clear vision on what we want to do. Subject to change but a finished architecture diagram, research on algorithms, stock market, and neural networks done. Experimentation code on which technical indicators to use, api usage to get stock market data, and what data libraries we want to use. Essentially figuring out the logistical backbone of the project. 
+Checkpoint 1: Clear vision on what we want to do. Subject to change but a finished architecture diagram, research on algorithms, stock market, and neural networks done. Experimentation code on which technical indicators to use, api usage to get stock market data, and what data libraries we want to use. That also means code that can organize the data we pull into a processable format. Figure out the training for the first neural network. Look into parallel computing to train the neural networks faster.
 
 Checkpoint 2: Should have some base-level neural network and algorithm working. Some sort of base-level UI done. Get the project to a state where data from a timeframe can be fed into the algorithms we have and we can return results whether the stock will trend up or down. Tested our algorithm with real-world data to educate decisions on how to adjust and improve.
 
