@@ -1,27 +1,17 @@
 import math
 import pandas as pd
 import yfinance as yf
-import datetime
+from datetime import datetime, timedelta
     
 def calculate_moving_average(stock_symbol, n_days, start_date, end_date) -> pd.DataFrame:
-    data = yf.Ticker(stock_symbol) #get the stock data
-    historical_data = data.history(start=start_date, end=end_date) #get the data from start date to end date, to get the indexes
+    adjusted_start_date = (datetime.strptime(start_date, '%Y-%m-%d') - timedelta(days=n_days * 1.5)).strftime('%Y-%m-%d') #add a buffer since the stock market isn't open everyday
+    historical_data = yf.download(stock_symbol, adjusted_start_date, end_date)
+    #get the data from start date to end date, to get the indexes
     if historical_data.empty:
         return None
 
-    starting_row_name = historical_data.iloc[0].name
-    ending_row_name = historical_data.iloc[-1].name
-
-    full_data = data.history(period="max")
-    
-    starting_index = full_data.index.get_loc(starting_row_name) - (n_days - 1) #find our desired position in the max dataframe
-    ending_index = full_data.index.get_loc(ending_row_name) #find our end_date in the max dataframe
-
-    if starting_index < 0: #prevent out of bound errors
-        return None
-    relevant_data = full_data.iloc[starting_index:ending_index + 1]
-    moving_averages = relevant_data['Close'].rolling(window=n_days).mean().to_frame()
-    aligned_moving_averages = moving_averages.loc[starting_row_name:ending_row_name]
+    moving_averages = historical_data['Close'].rolling(window=n_days).mean().to_frame()
+    aligned_moving_averages = moving_averages.loc[start_date:]
 
     return aligned_moving_averages
         
@@ -57,5 +47,5 @@ def movingAverageCross(moving_average1: pd.DataFrame, moving_average2: pd.DataFr
     return aligned_data
 
 moving_average = calculate_moving_average('AAPL', 20, '2023-01-06', '2023-03-04')
-moving_average2 = calculate_moving_average('AAPL', 50, '2023-01-01', '2023-03-04')
-print(moving_average)
+moving_average2 = calculate_moving_average('AAPL', 200, '2024-01-01', '2024-03-04')
+print(moving_average2)
