@@ -1,7 +1,3 @@
-import yfinance as yf
-import numpy as np
-import pandas as pd
-
 def detectTrend(data):
     prevHigh = max(data[:2])
     prevLow = min(data[:2])
@@ -50,8 +46,5 @@ def detectTrend(data):
             starting_index = i
         prev_trend = current_trend
         prev_data = data[i]
-    
-    print(data)
-    return trend_data
 
-print(detectTrend([100, 105, 103, 104, 107, 110, 109, 113, 112, 112.5, 99, 140]))
+    return trend_data
