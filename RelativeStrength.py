@@ -13,7 +13,6 @@ class RelativeStrength():
     def __init__(self, ticker, start_date, period) -> None:
         self.start_date = start_date #could be current day or for testing days in the past
         self.period = period #this is going to be a number of days, for example 14 would be 14 days of stock market open days
-                             #from current day. basically Today - 14 days is the period.
         self.ticker = ticker #this is the stock symbol
     
     def find_ticker_data(self):
@@ -21,8 +20,8 @@ class RelativeStrength():
         return data
     
     def find_gain(self, period):
-        #what this does is take the amount of green days, calculate the average gain over the period
-        delta = self.find_ticker_data()['Close'].diff() #this creates a series with CandleStick data points
+        #this takes the amount of green days, calculate the average gain over the period
+        delta = self.find_ticker_data()['Close'].diff() 
         gain = (delta.where(delta > 0, 0)).rolling(period).mean()
         return gain
     
