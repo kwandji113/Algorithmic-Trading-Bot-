@@ -31,7 +31,7 @@ class RelativeStrength():
         loss = (-delta.where(delta < 0, 0)).rolling(period).mean()
         return loss
     
-    def rsi(self, gain, loss): 
+    def rsi(self): 
         gain = self.find_gain(self.period)
         loss = self.find_loss(self.period)
         gain_over_loss = gain / loss
