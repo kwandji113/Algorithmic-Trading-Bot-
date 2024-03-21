@@ -36,14 +36,22 @@ def detectTrend(data):
                 current_trend = -1
             prevHigh = data[i]
 
-        if((current_trend is not prev_trend or i == len(data) - 1) and i - starting_index >= 3):
+        if((current_trend is not prev_trend and i - starting_index >= 3)):
             for i in range(starting_index, i):
                 trend_data[i] = prev_trend
+        if(i == len(data) - 1):
+            if(current_trend == prev_trend):
+                for i in range(starting_index, i + 1):
+                    trend_data[i] = prev_trend
+            else:
+                trend_data[len(data) - 1] = 0
+        
         if(current_trend is not prev_trend):
             starting_index = i
         prev_trend = current_trend
         prev_data = data[i]
-
+    
+    print(data)
     return trend_data
 
-print(detectTrend([100, 105, 103, 104, 107, 110, 109, 113, 112, 116, 115, 119]))
+print(detectTrend([100, 105, 103, 104, 107, 110, 109, 113, 112, 112.5, 99, 140]))
