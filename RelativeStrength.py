@@ -1,6 +1,6 @@
 import yfinance as yf
 import pandas as pd
-import datetime
+from datetime import datetime, timedelta
 
 
 #this is a mathematical algorythm that will output the RSI for certain periods. This will calculate the RSI, 
@@ -16,7 +16,9 @@ class RelativeStrength():
         self.ticker = ticker #this is the stock symbol
     
     def find_ticker_data(self):
-        data = yf.download(self.ticker, self.start_date, self.start_date - self.period)
+        date_obj = datetime.strptime(self.start_date, '%Y-%m-%d')
+        end_date = date_obj - timedelta(self.period)
+        data = yf.download(self.ticker, self.start_date, end_date)
         return data
     
     def find_gain(self, period):
