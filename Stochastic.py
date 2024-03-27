@@ -30,7 +30,7 @@ class Stochastic():
         
     def find_lowest_in_period(self):
         data = self.find_ticker_data()
-        lowest = -1 #because a stock value cannot be less than -1, so itll never be the lowest value
+        lowest = float('inf') #because a stock value cannot be less than -1, so itll never be the lowest value
         for val in  data['High']:
             if val < lowest:
                 lowest = val
