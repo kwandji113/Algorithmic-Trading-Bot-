@@ -21,4 +21,4 @@ ticker = 'AAPL'
 start_date = '2023-01-01'
 end_date = '2023-01-30'
 obv_data = calculate_obv(ticker, start_date, end_date)
-print(obv_data[['Close','CLOSE_TREND']])
+print(obv_data[['Close','CLOSE_TREND', 'OBV', 'OBV_TREND']])
