@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import yfinance as yf
 import pandas_ta as ta
-import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 pd.set_option('display.max_columns', None)
 
@@ -23,13 +22,13 @@ data.dropna(inplace=True) #getting rid of all the NULLS/NONE
 data.reset_index(inplace = True) 
 data.drop(['Volume', 'Close', 'Date'], axis=1, inplace=True)
 
-
+#scale data between 0 and 1 to prevent big ass numbers from providing too much weight and small numbers not providing enough
 sc = MinMaxScaler(feature_range=(0,1))
 data_set_scaled = sc.fit_transform(data)
 
 X = []
-backcandles = 30 #the amount of previous days we are using to predict future data
-n_values = 10 #this is the amount of future values you want to predict
+backcandles = 5 #the amount of candles we are using to predict prices
+n_values = 1 #this is the amount of future values you want to predict
 
 for i in range(8): #8 is the amount of columns we are using as training data
     X.append([])
@@ -42,7 +41,7 @@ X=np.moveaxis(X, [0], [2])
 X = np.array(X)
 
 Y = []
-for i in range(backcandles, data_set_scaled.shape[0] - n_values + 1):
+for i in range(backcandles - 1, data_set_scaled.shape[0] - n_values + 1): #we have backcandles -1 since we already shifted all target closing price values down
     Y.append(data_set_scaled[i:i+n_values, -1]) #grabbing current -> current + n_values which is what we want
 
 Y = np.reshape(Y, (len(Y), n_values))

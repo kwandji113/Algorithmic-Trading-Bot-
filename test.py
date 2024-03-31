@@ -10,6 +10,7 @@ for i in range(0, amount_of_rows):
         number += 1
         data_set_scaled[i].append(number)
 data_set_scaled = np.array(data_set_scaled)
+print(data_set_scaled)
 n_values = 5 #this is the amount of future values you want to predict
 Y = []
 for i in range(0, data_set_scaled.shape[0] - n_values + 1):
@@ -25,6 +26,5 @@ for i in range(8): #8 is the amount of columns we are using as training data
 
 print(Y)
 
-print(X)
     
     
