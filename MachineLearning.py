@@ -6,7 +6,7 @@ import pandas_ta as ta
 from sklearn.preprocessing import MinMaxScaler
 pd.set_option('display.max_columns', None)
 
-data = yf.download(tickers = 'AAPL', start = '2012-01-01',end = '2023-01-01')
+data = yf.download(tickers = 'MSFT', start = '2012-01-01',end = '2023-01-01')
 
 #getting our inputs, the technical indicators and all that stuff, can add more if you want
 data['RSI'] = ta.rsi(data.Close, 14)
@@ -28,7 +28,7 @@ data_set_scaled = sc.fit_transform(data)
 
 X = []
 backcandles = 5 #the amount of candles we are using to predict prices
-n_values = 1 #this is the amount of future values you want to predict
+n_values = 2 #this is the amount of future values you want to predict
 
 for i in range(8): #8 is the amount of columns we are using as training data
     X.append([])
@@ -69,9 +69,11 @@ output = Activation('relu', name='output')(inputs)
 model = Model(inputs=lstm_input, outputs=output)
 adam = optimizers.Adam()
 model.compile(optimizer=adam, loss='mse')
-model.fit(x=X_train, y=y_train, batch_size=15, epochs=30, shuffle=True, validation_split = 0.1)
+model.fit(x=X_train, y=y_train, batch_size=15, epochs=15, shuffle=True, validation_split = 0.1)
 
 y_pred = model.predict(X_test)
+print(y_pred.shape)
+
 
 plt.figure(figsize=(16,8))
 plt.plot(y_test, color = 'black', label = 'Test')
