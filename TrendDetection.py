@@ -9,8 +9,6 @@ def detectTrend(data):
     prev_trend = 0
     prev_data = data[1]
     for i in range(2, len(data)):
-        if(data[i] == 99):
-            pass
         if data[i] < prev_data:
             if data[i] > prevLow:
                 upTrendCount += 1
