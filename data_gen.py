@@ -25,4 +25,6 @@ def data_gen(start_date, end_date):
         i = i + 1
     return random_dates
     
-#TODO get stock ticker to avoid dupelicate data
+#Accounts for changes in the SP500
+def get_stock_ticker(stock_index):
+    pass
