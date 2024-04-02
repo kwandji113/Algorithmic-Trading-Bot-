@@ -19,5 +19,9 @@ def nDayEMA(stock_symbol, n_days, start_date, end_date):
 
     return aligned_ema
 
+def calculate_EMA_single_day(stock_symbol, n_days, date):
+    end_date = (datetime.strptime(date, '%Y-%m-%d') + timedelta(days=10)).strftime('%Y-%m-%d') #add a buffer since the stock market isn't open everyday
+    return nDayEMA(stock_symbol, n_days, date, end_date).iloc[0]
+
 ema = nDayEMA('AAPL', 20, '2024-01-01', '2024-03-01')
 print(ema)
