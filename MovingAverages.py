@@ -14,6 +14,10 @@ def calculate_moving_average(stock_symbol, n_days, start_date, end_date) -> pd.D
     aligned_moving_averages = moving_averages.loc[start_date:]
 
     return aligned_moving_averages
+
+def calculate_moving_average_single_day(stock_symbol, n_days, date):
+    end_date = (datetime.strptime(date, '%Y-%m-%d') + timedelta(days=10)).strftime('%Y-%m-%d') #add a buffer since the stock market isn't open everyday
+    return calculate_moving_average(stock_symbol, n_days, date, end_date)['Close'].iloc[0]
         
 #calculate crosses, and divergence/convergence between two moving averages
 def sgn(n):
