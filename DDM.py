@@ -4,39 +4,6 @@
 import yfinance as yf
 import pandas as pd
 import csv
-msft = yf.Ticker("MSFT")
-nvda = yf.Ticker("NVDA")
-#experimentation that is commented out 
-
-# msft_dividends = msft.dividends
-# for index, row in msft_dividends():
-#     print(row['c1'], row['c2'])
-# print(type(msft))
-# print(type(msft.dividends))
-# print(msft.dividends[:5])
-# print(len(msft.dividends))
-
-
-dividends = msft.dividends
-
-# Print the DataFrame
-print(dividends)
-
-# Accessing individual elements in the DataFrame
-# For example, accessing the first dividend amount and date
-first_dividend_amount = dividends.iloc[0]
-print(first_dividend_amount)
-first_dividend_date = dividends.index[1]
-print(type(first_dividend_date))
-
-print("First Dividend Amount:", first_dividend_amount)
-print("First Dividend Date:", first_dividend_date)
-info = msft.info
-beta = info.get('beta')
-print(beta)
-ninfo = nvda.info
-betan = ninfo.get('beta')
-print(betan)
 
 #guideline source for all calculations: https://web.archive.org/web/20231005030422/https://www.stock-analysis-on.net/NYSE/Market-Risk-Premium
 class DDM: 
