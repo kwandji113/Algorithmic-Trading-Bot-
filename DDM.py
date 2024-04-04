@@ -35,8 +35,30 @@ class DDM:
         self.cost_of_equity = self.risk_free_rate + self.beta * market_risk_premium
 
     #calculates the dividend growth rate using historical data from yFinance and sets value to instance variable
-    def DGR(self):
-        pass
+    def DGR(self, symbol, starting_date):
+        #a lot of the code below is from chatGPT and hasn't been tested yet so might cause errors 
+
+        company = DDM(symbol, starting_date)
+        #loop through dividends to find dividend that matches with start year and find dividend date that is closest to the start month
+        given_date = pd.Timestamp(year=self.date[0], month=self.date[1])
+        given_date = given_date.tz_localize(None)
+        #initialize variables to store closest difference and closest dividend date for checks in loop below
+        closest_dividend_date = None
+        closest_difference = float('inf')
+
+        for dividend_date in company.ticker.dividends.index:
+            #localize method on dividend date and given date is done because they had different timezone states
+            #one was naive and another was aware and because of this i couldn't calculate the difference from subtracting the TimeStamp objects
+            #localize methods standardizes the TimeStamp objects so I can do work on them 
+            dividend_date = dividend_date.tz_localize(None)
+            #the other way of getting the day amount on a timestamp obj is ".day" not ".days" this could cause issues with syntax need to test
+            difference = abs((dividend_date - given_date).days)
+
+            if difference < closest_difference:
+                closest_dividend_date = dividend_date
+                closest_difference = difference
+
+
 
     
     """
