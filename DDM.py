@@ -4,6 +4,7 @@
 import yfinance as yf
 import pandas as pd
 msft = yf.Ticker("MSFT")
+nvda = yf.Ticker("NVDA")
 #experimentation that is commented out 
 
 # msft_dividends = msft.dividends
@@ -29,13 +30,21 @@ print(type(first_dividend_date))
 
 print("First Dividend Amount:", first_dividend_amount)
 print("First Dividend Date:", first_dividend_date)
+info = msft.info
+beta = info.get('beta')
+print(beta)
+ninfo = nvda.info
+betan = ninfo.get('beta')
+print(betan)
 
-class EEDPS: 
-    def __init__(self, ticker, start_date):
-        self.ticker = ticker
+class DDM: 
+    def __init__(self, ticker_name, start_date):
+        self.ticker_name = ticker_name
         self.expected_dividend 
         self.cost_of_equity 
         self.dividend_growth_rate
+        self.beta
+        self.ticker = yf.Ticker(ticker_name)
 
     #calculates expected dividend per share based on the current dividend payout and growth rate calculated in other methods and sets value to instance variable
     def EEDPS(self):
@@ -48,4 +57,14 @@ class EEDPS:
     #calculates the dividend growth rate using historical data from yFinance and sets value to instance variable
     def DGR(self):
         pass
+    
+    """
+    Value is needed for the cost of equity calculations
+    sets the beta for the company we are interested in using yfinance. Only issue is that the beta value is only for current day. This is a placeholder for now until I can figure out how to 
+    calculate beta myself
+    code for beta info gotten from: https://quant.stackexchange.com/questions/15797/how-does-yahoo-finance-calculate-beta
+    """
+    def set_beta(self):
+        info = self.ticker.info
+        self.beta = info.get('beta')
 
