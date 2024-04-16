@@ -17,7 +17,7 @@ class Stochastic():
         
     def find_ticker_data(self):
         date_obj = datetime.strptime(self.start_date, '%Y-%m-%d')
-        end_date = date_obj - timedelta(self.period)
+        end_date = date_obj - timedelta(days = self.period)
         data = yf.download(self.ticker, self.start_date, end_date)
         return data
         
