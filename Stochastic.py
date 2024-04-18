@@ -7,41 +7,49 @@ from datetime import datetime, timedelta
 
 class Stochastic():
     
-    def __init__(self, ticker, start_date, period):
+    def __init__(self, ticker, end_date, period):
         self.ticker = ticker
         
-        self.start_date = start_date
+        self.end_date = end_date
         
         self.period = period
+        
+        self.data = self.find_ticker_data()
                
         
     def find_ticker_data(self):
-        date_obj = datetime.strptime(self.start_date, '%Y-%m-%d')
-        end_date = date_obj - timedelta(days = self.period)
-        data = yf.download(self.ticker, self.start_date, end_date)
+        date_obj = datetime.strptime(self.end_date, '%Y-%m-%d')
+        start_date = date_obj - timedelta(days = self.period)
+        data = yf.download(self.ticker, start_date, self.end_date)
         return data
         
     def find_highest_in_period(self):
-        data = self.find_ticker_data()
         highest = -1 #because a stock value cannot be less than -1, so itll never be the lowest value
-        for val in  data['High']:
+        for val in  self.data['High']:
             if val > highest:
                 highest = val
         
         return highest
         
     def find_lowest_in_period(self):
-        data = self.find_ticker_data()
         lowest = float('inf') #because a stock value cannot be more than infinity , so itll never be the lowest value
-        for val in  data['High']:
+        for val in  self.data['Low']:
             if val < lowest:
                 lowest = val
         
         return lowest
         
     def stochastic_oscillator(self):
-        data = self.find_ticker_data()
-        most_recent_close = data['Close'].iloc[-1]
-        #iloc stands for integer location, specifically for a pandas dataframa and can find a value at index (-1 for the end of the frame)
-        so = ((most_recent_close - self.find_lowest_in_period)/(self.find_highest_in_period - self.find_lowest_in_period)) * 100
+        most_recent_close = self.data['Close'][-1]
+        lowest = self.find_lowest_in_period()
+        highest = self.find_highest_in_period()
+        so = ((most_recent_close - lowest)/(highest - lowest)) * 100
         return so
+
+#testing: 
+# stoch = Stochastic('AAPL', '2021-02-06', 14)
+# print(stoch.data)
+# high = stoch.find_highest_in_period()
+# low = stoch.find_lowest_in_period()
+# so = stoch.stochastic_oscillator()
+# print(so)
