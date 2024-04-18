@@ -72,9 +72,7 @@ class RelativeStrength():
         rsi = 100.0 - (100.0 / (1.0 + gain_over_loss))
         return rsi
 
-    #def rsi_for_period(self):
-        
-
-rsi_obj = RelativeStrength('AAPL','2021-02-06', 14)
-rsi_value = rsi_obj.rsi()
-print(rsi_value)
+#testing:
+# rsi_obj = RelativeStrength('AAPL','2021-02-06', 14)
+# rsi_value = rsi_obj.rsi()
+# print(rsi_value)
