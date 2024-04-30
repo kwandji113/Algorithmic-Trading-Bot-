@@ -4,6 +4,7 @@ import pandas as pd
 import yfinance as yf
 import pandas_ta as ta
 from sklearn.preprocessing import MinMaxScaler
+import random
 pd.set_option('display.max_columns', None)
 
 data = yf.download(tickers = 'AAPL', start = '2012-01-01',end = '2023-01-01')
