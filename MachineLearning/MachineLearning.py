@@ -74,7 +74,7 @@ model.compile(optimizer=adam, loss='mse')
 model.fit(x=X_train, y=y_train, batch_size=15, epochs=5, shuffle=True, validation_split = 0.1)
 
 y_pred = model.predict(X_test)
-print(y_pred.shape)
+
 
 
 plt.figure(figsize=(16,8))
@@ -82,3 +82,10 @@ plt.plot(y_test, color = 'black', label = 'Test')
 plt.plot(y_pred, color = 'green', label = 'pred')
 plt.legend()
 plt.show()
+
+def predict():
+    predict = random.randint(0, 1)
+    if(predict == 0):
+        return "Buy"
+    else:
+        return "Sell"
