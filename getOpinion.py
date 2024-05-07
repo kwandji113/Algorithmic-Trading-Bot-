@@ -16,7 +16,7 @@ class GetOpinion():
         self.window = 7 #for the week before
         
 
-    def form_opinion(self):
+    def form_opinion(self, bias):
         #1 = buy, -1 = sell, 0 = no opinion
         rsi = self.get_RSI_signal() 
         stoch = self.get_stoch_signal() 
@@ -24,17 +24,19 @@ class GetOpinion():
         signal = None #this will either be buy or sell
         #code below will be added to once there is a way to add a bias calculation
         #bias will be passed in as a string of either "trending" or "ranging"
-        # if bias.equals("Trending"):
-        #     stoch
-        # elif bias.equals("Ranging"):
-        #     bias_value =
+        if bias.equals("Trending"):
+            #stoch will be valuable, but less so since it is more useful in a ranging market, hence it will be less value in the final calc
+            stoch *= 0.5
+        elif bias.equals("Ranging"):
+            #rsi value will be less since stoch is a little more valuable in a ranging market
+            rsi *= 0.5
             
         if (rsi + stoch) >= 1:
             signal = "Buy"
         elif (rsi + stoch) <= -1:
             signal = "Sell"
         else: 
-            signal = None
+            signal = "Hold"
             
         return signal          
     
@@ -63,9 +65,13 @@ class GetOpinion():
                     slope -=1
                            
         if slope >= 1:
-            opinion = 1
+            #opinion = 1
+            opinion = slope
         elif slope <= -1:
-            opinion = -1
+            #opinion = -1
+            opinion = slope
+        #code is commented out incase my idea does not work for bias calculation
+
             
         if all(30.0 < x < 70.0 for x in rsi_list):
             #this means every value in the list is within the safe range being 30-70, meaning there is no signal to buy
@@ -96,9 +102,12 @@ class GetOpinion():
                     slope -=1
                            
         if slope >= 1:
-            opinion = 1
+            #opinion = 1
+            opinion = slope
         elif slope <= -1:
-            opinion = -1
+            #opinion = -1
+            opinion = slope
+        #code is commented out incase my idea does not work for bias calculation
             
         if all(20.0 < x < 80.0 for x in stoch_list):
             #this means every value in the list is within the safe range being 20-80, meaning there is no signal to buy
