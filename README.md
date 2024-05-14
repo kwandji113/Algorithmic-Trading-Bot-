@@ -20,3 +20,9 @@ Final litmus test on the effectiveness of our Algorithmic trader:
 Subject to change but we use tests to see on average if the amount of money made with the algorithmic trader is greater than the money made from random selections. 
 Testing methodology: We take a 2 week period in which at the start we generate our 10 best performing stocks according to the model and buy a set $ value of each stock on the first day. For the random test we randomly choose 10 tickers in the s&p 500 and buy the same set $ value of each stock on the first day. In each subsequent day we randomly buy shares of 5 companies and sell 5 company shares in the "portfolio" we already have. This same process occurs for the algorithmic trader as well, the difference is the 5 stocks we buy is predicted by our model and the 5 we sell are the 5 worst performing as stated by our model in our "portfolio". 
 At the end of each day, we find the total value of the assets from the algorithmic trading portfolio and the random portfolio. We then take the difference between these two values and this is the going to be the data point we have in our t-test sample. 
+
+
+Sprint 3:
+Final litmus test is still the same. 
+Test for efficacy of neural network: Then we need to look at how many predictions we got right vs. just random which is assumed to be .5 Then we check to see if the number of predictions we got right is statistically significant vs. the expected of .5
+Maybe an adjustment ot the litmus test is not seeing which ones we think will increase in price the most but which ones we are most confident will increase and decrease. 
