@@ -1,28 +1,53 @@
-# import csv
+import csv
+from collections import deque
 import yfinance as yf
-# # data = []
-# # # Open the CSV file in read mode
-# # with open('TB3MS.csv', 'r') as csv_file:
-# #     # Create a CSV reader object
-# #     csv_reader = csv.reader(csv_file)
+from queue import Queue
+from copy import deepcopy
+from typing import Deque, Generic, Tuple, TypeVar
+T = TypeVar("T")
+class Queue(Generic[T]):
+    def __init__(self) -> None:
+        self.queue:Deque = deque()
+
+    def enqueue(self, item)->None:
+        self.queue.append(item)
+
+    def dequeue(self)->T:
+        return self.queue.popleft()
+
+    def peek(self)->T:
+        if len(self.queue)>0:
+            return self.queue[0]
+        else:
+            return None
+
+    def is_empty(self) -> bool:
+        return len(self.queue) == 0
+    def length(self) -> int:
+        return len(self.queue)
+# data = []
+# # Open the CSV file in read mode
+# with open('TB3MS.csv', 'r') as csv_file:
+#     # Create a CSV reader object
+#     csv_reader = csv.reader(csv_file)
     
-# #     # Iterate over each row in the CSV file
-# #     for row in csv_reader:
-# #         data.append(row)
-# # print(type(data[1]))
+#     # Iterate over each row in the CSV file
+#     for row in csv_reader:
+#         data.append(row)
+# print(type(data[1]))
 
 msft = yf.Ticker("MSFT")
-# nvda = yf.Ticker("NVDA")
+nvda = yf.Ticker("NVDA")
 
 
 
-# # msft_dividends = msft.dividends
-# # for index, row in msft_dividends():
-# #     print(row['c1'], row['c2'])
-# # print(type(msft))
-# # print(type(msft.dividends))
-# # print(msft.dividends[:5])
-# # print(len(msft.dividends))
+msft_dividends = msft.dividends
+# for index, row in msft_dividends():
+#     print(row['c1'], row['c2'])
+print(type(msft))
+print(type(msft.dividends))
+print(msft.dividends[:5])
+print(len(msft.dividends))
 
 
 dividends = msft.dividends
@@ -79,3 +104,20 @@ for dividend_date in dividends.index:
 
 # Print the closest dividend date
 print("Closest Dividend Date:", closest_dividend_date)
+
+# trying to write something that will first populate a queue with the first 5 values will change to 4 
+# then change it to be something that enqueues and dequeues to keep running log of yearly dividend which will then be used to calculate DGR
+q = Queue()
+thing = []
+for x in range (20):
+    thing.append(x)
+counter = 0
+while q.length() < 5:
+    q.enqueue(thing[counter])
+    counter += 1
+    continue
+
+while not q.is_empty():
+    print(q.dequeue())
+
+

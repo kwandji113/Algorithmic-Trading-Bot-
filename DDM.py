@@ -46,6 +46,7 @@ class DDM:
         closest_dividend_date = None
         closest_difference = float('inf')
 
+        #might have to change this to in range for loop so that I can access the index
         for dividend_date in company.ticker.dividends.index:
             #localize method on dividend date and given date is done because they had different timezone states
             #one was naive and another was aware and because of this i couldn't calculate the difference from subtracting the TimeStamp objects
@@ -57,6 +58,7 @@ class DDM:
             if difference < closest_difference:
                 closest_dividend_date = dividend_date
                 closest_difference = difference
+        #use a queue to enqueue and dequeue to always have a queue of the 5 most recent year's dividends 
 
 
 
