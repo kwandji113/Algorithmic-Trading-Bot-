@@ -1,0 +1,10 @@
+# Handle line endings automatically for files detected as text
+* text=auto
+
+# Handle line endings explicitly for specific types of files
+*.js text
+*.css text
+*.html text
+*.py text
+*.java text
+*.sh text eol=lf
