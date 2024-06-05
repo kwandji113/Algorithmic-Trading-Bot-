@@ -13,19 +13,15 @@ class DDM:
         self.expected_dividend 
         self.cost_of_equity 
         self.dividend_growth_rate
-        self.beta
         self.ticker = yf.Ticker(ticker_name)
         self.date = start_date
-        #flat value for the expected required return because all other ways of calculating seem illogical and this is ultimately up to the user
-        #idea for a feature could be asking the user what kind of return they are expecting in the final product 
-        self.return_with_risk = .08
-        self.risk_free_rate
+        
 
     #calculates expected dividend per share based on the current dividend payout and growth rate calculated in other methods and sets value to instance variable
     def EEDPS(self):
         pass
 
-    #calculates the cost of capital equity using the CAPM model and sets value to instance variable
+    #calculates the cost of capital equity using the CAPM model: (dividends per share/current market value of stock) + dividend growth rate and sets value to instance variable
     def CCE(self, ticker, starting_date):
         company = DDM(ticker, starting_date)
         company.set_beta()
