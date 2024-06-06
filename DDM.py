@@ -13,7 +13,7 @@ class DDM:
         self.expected_dividend 
         self.cost_of_equity 
         self.dividend_growth_rate
-        self.ticker = yf.Ticker(ticker_name)
+        self.data = yf.Ticker(ticker_name)
         self.date = start_date
         
 
@@ -46,7 +46,7 @@ class DDM:
         closest_difference = float('inf')
 
         #might have to change this to in range for loop so that I can access the index
-        for dividend_date in company.ticker.dividends.index:
+        for dividend_date in company.data.dividends.index:
             #localize method on dividend date and given date is done because they had different timezone states
             #one was naive and another was aware and because of this i couldn't calculate the difference from subtracting the TimeStamp objects
             #localize methods standardizes the TimeStamp objects so I can do work on them 
@@ -58,8 +58,41 @@ class DDM:
             if difference < closest_difference and dividend_date < given_date:
                 closest_dividend_date = dividend_date
                 closest_difference = difference
-        #use a queue to enqueue and dequeue to always have a queue of the 5 most recent year's dividends 
+        historic_dividends = []
+        closest_dividend_month = closest_dividend_date.month
 
+        #add all dividends to a list until you hit the closest dividend date 
+        #loop through using indexes in a for loop with range and check to see if the date matches with the closest dividend date, if it does then break 
+
+        for i in range(len(company.data.dividends)):
+            cur_date = company.data.dividends.index[i]
+            cur_dividend = company.data.dividends.iloc[i]
+            #if the month matches then add to the list
+            if cur_date.month == closest_dividend_month:
+                historic_dividends.append((cur_date, cur_dividend))
+            
+            #if the date is the closest dividend date then you can break 
+            if cur_date == closest_dividend_date:
+                break
+
+            # #checks if list is empty if so just add in the dividend price 
+            # if not historic_dividends:
+            #     historic_dividends.append(cur_dividend)
+            # #don't need to check the date because you're assuming that they only increase the price once a year and also in MSFT dividends dividend value could be diff in the same year
+            # #just need to check if the price is different because you're assuming that price changes only occur yearly 
+            # #if price is different then it's increased for the year and you can add to list 
+            # elif historic_dividends[-1] != cur_dividend:
+            #     historic_dividends.append(cur_dividend)
+        
+        #loop through to calculate avg growth rate and return 
+        avg_growth = []
+        historic_dividends = historic_dividends[-4]
+        for i in range (len(historic_dividends) - 1):
+            growth = historic_dividends[i+1]/historic_dividends[i] - 1
+            avg_growth.append(growth)
+        growth_rate = sum(avg_growth)/ len(avg_growth)
+        return growth_rate
+        
 
 
 
