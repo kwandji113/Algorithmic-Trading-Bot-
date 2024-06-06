@@ -93,7 +93,8 @@ class DDM:
         growth_rate = sum(avg_growth)/ len(avg_growth)
         return growth_rate
         
-
+    def num_dividends(self):
+        start_year = self.date[0]
 
 
 
