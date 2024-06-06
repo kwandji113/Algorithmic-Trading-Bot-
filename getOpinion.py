@@ -36,9 +36,9 @@ class GetOpinion():
             rsi *= 0.5
         
             
-        if ((rsi + stoch) * ma) >= 1:
+        if ((rsi + stoch) + ma) >= 1:
             signal = "Buy"
-        elif ((rsi + stoch) * ma) <= -1:
+        elif ((rsi + stoch) + ma) <= -1:
             signal = "Sell"
         else: 
             signal = "Hold"
