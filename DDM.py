@@ -34,6 +34,9 @@ class DDM:
     def DGR(self, symbol, starting_date):
         #a lot of the code below is from chatGPT and hasn't been tested yet so might cause errors 
 
+        """""
+        I'm not sure if i need to make a DDM object here I don't think so but check this later 
+        """
         company = DDM(symbol, starting_date)
         #loop through dividends to find dividend that matches with start year and find dividend date that is closest to the start month
         given_date = pd.Timestamp(year=self.date[0], month=self.date[1])
@@ -51,48 +54,14 @@ class DDM:
             #the other way of getting the day amount on a timestamp obj is ".day" not ".days" this could cause issues with syntax need to test
             difference = abs((dividend_date - given_date).days)
 
-            if difference < closest_difference:
+            #have to make sure that the closest dividend date that is set is before the given starting date
+            if difference < closest_difference and dividend_date < given_date:
                 closest_dividend_date = dividend_date
                 closest_difference = difference
         #use a queue to enqueue and dequeue to always have a queue of the 5 most recent year's dividends 
 
 
 
-    
-    """
-    Value is needed for the cost of equity calculations
-    sets the beta for the company we are interested in using yfinance. Only issue is that the beta value is only for current day. This is a placeholder for now until I can figure out how to 
-    calculate beta myself
-    code for beta info gotten from: https://quant.stackexchange.com/questions/15797/how-does-yahoo-finance-calculate-beta
-    """
-    def set_beta(self):
-        info = self.ticker.info
-        self.beta = info.get('beta')
-
-    def set_risk_free_rate(self):
-        #creates list with all of the 3 month treasury bill rates by month with each value in the list being a tuple
-        #first element in tuple is the date in the format YEAR-MM-DD with all dates in numbers and each value separated by a -
-        #second element is a string that contains the interest rate for that month and yeear
-        data = []
-        # Open the CSV file in read mode
-        with open('TB3MS.csv', 'r') as csv_file:
-            # Create a CSV reader object
-            csv_reader = csv.reader(csv_file)
-            # Iterate over each row in the CSV file
-            for row in csv_reader:
-                data.append(row)
-        #first item in list is documentation on format of data, need to delete to process and can prob optimize later 
-        data.pop(0)
-
-        #another place to optimize, this is just searching for correct T bill rate based on month and year on linear search, can change to binary or something 
-        for pair in data:
-            #again set year month and day variables based on the delimiter '-' for row
-            year, month, day = pair[0].split('-')
-            #if year and month for current row matches the start date year and month then set risk free limit  
-            if year == self.date[0] and month == self.date[1]:
-                self.risk_free_rate = float(pair[1])
-                return
-            
 
 
     #string processing to override self.date with a tuple containing the year as first element and day as second, just some string processing, assuming that date was passed as the format
@@ -102,3 +71,7 @@ class DDM:
         year, month, day = self.date.split('-')
         self.date = (year, month)
 
+"""
+things you may need to delete 
+def set_year_and_date, I think you can just use the date time objects instead of setting it as an instance variable
+"""
