@@ -22,20 +22,25 @@ def get_random_stock(day):
     #there's the possibility that the company is delisted and does not have data for the day that you want
     pass
 
-#calculates a 2 sided 2 sample t test and stores test statistic and p-value 
-t_stat, p_value = stats.ttest_ind(estimated_returns, random_returns)
-print("t_stat: " + str(t_stat))
-print("pval: " + str(p_value))
-if t_stat > 0:
-    p_value = p_value / 2
-else:
-    p_value = 1 - p_value/2
+
 
 #method to get p val and t statistic given the data sets
-def one_sided_2_sample_test(predicted, random):
-    pass
-
-
+#predicted should be a list containing all of the changes in $ for using neural network 
+#random should be a list containing all of the changes in $ for using random selection s
+#returns True if null is rejected and false if it isn't 
+def one_sided_2_sample_test(predicted: list, random: list) -> bool:
+    # Perform a one-sided two-sample t-test to see if predictions are greater than random 
+    _, p_value = stats.ttest_ind(predicted, random, alternative='greater')
+    # Interpret the p-value
+    alpha = 0.05  # significance level
+    if p_value < alpha:
+        return True
+    else:
+        return False
+       
+list1 = [10, 12, 14, 16, 18]
+list2 = [8, 9, 10, 11, 12]
+print(one_sided_2_sample_test(list1, list2))
 """
 number off the companies taht you're selecting from 0-x 
 start 100 market days before present day, for each day generate a random number that will correlate to the stock chosen, 
