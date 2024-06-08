@@ -93,8 +93,13 @@ class DDM:
         growth_rate = sum(avg_growth)/ len(avg_growth)
         return growth_rate
         
-    def num_dividends(self):
-        start_year = self.date[0]
+    def num_dividends(self, symbol):
+        #the logic is that you can't include 2024 data bc it can skew it negatively since the year isn't done so you just average the recent years to find the average number of dividends
+        #a year 
+        company_dividends = yf.Ticker(symbol).dividends
+        filtered_dividends = company_dividends[(company_dividends.index.year >= 2018) & (company_dividends.index.year != 2024)]
+        frequency = filtered_dividends.resample('Y').count()
+        return frequency
 
 
 
