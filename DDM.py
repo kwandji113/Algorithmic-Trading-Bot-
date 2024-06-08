@@ -15,20 +15,57 @@ class DDM:
         self.dividend_growth_rate
         self.data = yf.Ticker(ticker_name)
         self.date = start_date
+        #dividend that is paid numerous times
+        self.dividend
+        #full dividend that is paid in the year
+        self.full_dividend
+        self.current_price
         
 
     #calculates expected dividend per share based on the current dividend payout and growth rate calculated in other methods and sets value to instance variable
-    def EEDPS(self):
-        pass
+    def predicted_dividend(self, symbol, starting_date):
+        #set instance variables with the number of divdends paid out yearly, DGR, and current dividend payout
+        data = DDM(symbol, starting_date)
+        payout_frequency = data.num_dividends(symbol)
+        data.DGR(symbol, starting_date)
+        self.full_dividend = self.dividend * payout_frequency
+        #set expected dividend
+        self.expected_dividend = self.full_dividend * self.dividend_growth_rate
+        
+
+        
+    def get_current_price(self, symbol, starting_date):
+        stock_data = yf.download(symbol, start=starting_date, end=starting_date)
+        #some code to get the price of a stock with some exception handling in case the day given is when the market is closed 
+        try:
+            # Fetch the historical data for the specified date range
+            stock_data = yf.download(symbol, start=starting_date, end=pd.to_datetime(starting_date) + pd.Timedelta(days=1))
+
+            # Check if data is available for the specified date
+            if starting_date in stock_data.index:
+                # Extract the stock price for the specified date
+                price = stock_data.loc[starting_date]['Close']
+                self.current_price = price
+            else:
+                return
+        except Exception as e:
+            return
 
     #calculates the cost of capital equity using the CAPM model: (dividends per share/current market value of stock) + dividend growth rate and sets value to instance variable
     def CCE(self, ticker, starting_date):
         company = DDM(ticker, starting_date)
-        company.set_beta()
-        company.set_year_and_date()
-        company.set_risk_free_rate()
-        market_risk_premium = self.return_with_risk - self.risk_free_rate
-        self.cost_of_equity = self.risk_free_rate + self.beta * market_risk_premium
+        company.predicted_dividend(ticker, starting_date)
+        company.get_current_price(ticker, starting_date)
+        self.cost_of_equity = (self.full_dividend / self.current_price) + self.dividend_growth_rate
+
+    #returns percent diff between what is the "true market value" and the actual market value
+    def true_value (self, symbol, starting_date):
+        company = DDM(symbol, starting_date)
+        company.CCE(symbol, starting_date)
+        predicted_value = self.expected_dividend / (self.cost_of_equity - self.dividend_growth_rate)
+        percent_difference = predicted_value / self.current_price
+        return percent_difference
+
 
     #calculates the dividend growth rate using historical data from yFinance and sets value to instance variable
     def DGR(self, symbol, starting_date):
@@ -73,6 +110,7 @@ class DDM:
             
             #if the date is the closest dividend date then you can break 
             if cur_date == closest_dividend_date:
+                self.dividend = cur_dividend
                 break
 
             # #checks if list is empty if so just add in the dividend price 
@@ -91,7 +129,8 @@ class DDM:
             growth = historic_dividends[i+1]/historic_dividends[i] - 1
             avg_growth.append(growth)
         growth_rate = sum(avg_growth)/ len(avg_growth)
-        return growth_rate
+        #sets the dividend growth rate instance var
+        self.dividend_growth_rate = growth_rate
         
     def num_dividends(self, symbol):
         #the logic is that you can't include 2024 data bc it can skew it negatively since the year isn't done so you just average the recent years to find the average number of dividends
@@ -102,13 +141,14 @@ class DDM:
         return frequency
 
 
+    #temporarily commenting this out bc i dont think i need it 
 
-    #string processing to override self.date with a tuple containing the year as first element and day as second, just some string processing, assuming that date was passed as the format
-    #YEAR-MONTH-DAY
-    def set_year_and_date(self):
-        #split the string into variables of year month and day by delimiter '-'
-        year, month, day = self.date.split('-')
-        self.date = (year, month)
+    # #string processing to override self.date with a tuple containing the year as first element and day as second, just some string processing, assuming that date was passed as the format
+    # #YEAR-MONTH-DAY
+    # def set_year_and_date(self):
+    #     #split the string into variables of year month and day by delimiter '-'
+    #     year, month, day = self.date.split('-')
+    #     self.date = (year, month)
 
 """
 things you may need to delete 
