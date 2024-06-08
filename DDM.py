@@ -154,3 +154,4 @@ class DDM:
 things you may need to delete 
 def set_year_and_date, I think you can just use the date time objects instead of setting it as an instance variable
 """
+#testing
