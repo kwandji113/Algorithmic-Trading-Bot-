@@ -1,4 +1,6 @@
 __pycache__/
+
+myenv/
 S&P500/
 lstm_tuning/
 /S&P500Daily
