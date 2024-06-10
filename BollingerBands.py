@@ -5,6 +5,7 @@ import yfinance as yf
 #data = yf.download(ticker, start ="2020-01-01", end = "2024-03-19")
 #print(data.head())
 
+
 def bollinger_bands(data, window, std):
   """
   This function calculates Bollinger Bands based on closing prices.
